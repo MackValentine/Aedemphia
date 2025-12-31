@@ -23,6 +23,7 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "drawable_mgr.h"
+#include "sprite_picture.h"
 
 // Constructor
 Sprite::Sprite(Drawable::Flags flags) : Drawable(0, flags)
@@ -113,10 +114,15 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flash = flash_effect;
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
-
-		bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
-		bitmap_effects_src_rect = rect;
-
+		Sprite_Picture* d_ptr = dynamic_cast<Sprite_Picture*>(this);
+		if (d_ptr) {
+			bitmap_effects_src_rect = GetSrcRect();
+			bitmap_effects = Cache::SpriteEffect(bitmap, GetSrcRect(), flipx_effect, flipy_effect, current_tone, current_flash);
+		}
+		else {
+			bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
+			bitmap_effects_src_rect = rect;
+		}
 		return bitmap_effects;
 	}
 }

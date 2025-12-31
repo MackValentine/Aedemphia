@@ -651,3 +651,43 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
 }
+
+bool Game_Pictures::NeedRefreshTone(Tone new_tone, int id) {
+	Tone oldTone = Main_Data::game_pictures->oldTones[id];
+	return true;
+
+	//if (oldTonesTimer[id] > 0)
+	//	oldTonesTimer[id]--;
+	//return oldTonesTimer[id] == 0;
+
+	bool need_update = false;
+
+	int perc_diff = 1;
+
+	int r_diff = new_tone.red * perc_diff / 100;
+	//r_diff = perc_diff;
+	bool r_upd = oldTone.red < new_tone.red - r_diff || oldTone.red > new_tone.red + r_diff;
+
+	int g_diff = new_tone.green * perc_diff / 100;
+	//g_diff = perc_diff;
+	bool g_upd = oldTone.green < new_tone.green - g_diff || oldTone.green > new_tone.green + g_diff;
+
+	int b_diff = new_tone.blue * perc_diff / 100;
+	//b_diff = perc_diff;
+	bool b_upd = oldTone.blue < new_tone.blue - b_diff || oldTone.blue > new_tone.blue + b_diff;
+
+	int a_diff = new_tone.gray * perc_diff / 100;
+	//a_diff = perc_diff;
+	bool a_upd = oldTone.gray < new_tone.gray - a_diff || oldTone.gray > new_tone.gray + a_diff;
+
+	//Output::Debug("Diff {} {} {} {}", r_diff, g_diff, b_diff, a_diff);
+
+	need_update = a_upd || r_upd || g_upd || b_upd;
+
+	return need_update;
+}
+
+void Game_Pictures::RefreshTone(Tone tone, int id) {
+	oldTones[id] = tone;
+	oldTonesTimer[id] = 5;
+}

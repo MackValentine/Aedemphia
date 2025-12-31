@@ -155,7 +155,12 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 		auto screen_tone = Main_Data::game_screen->GetTone();
 		tone = Blend(tone, screen_tone);
 	}
-	SetTone(tone);
+
+	if (Main_Data::game_pictures->NeedRefreshTone(tone, pic_id)) {
+		Main_Data::game_pictures->RefreshTone(tone, pic_id);
+		SetTone(tone);
+	}
+	//SetTone(tone);
 
 	if (data.flags.affected_by_flash) {
 		SetFlashEffect(Main_Data::game_screen->GetFlashColor());

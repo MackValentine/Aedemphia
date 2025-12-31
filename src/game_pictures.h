@@ -133,6 +133,11 @@ public:
 	Picture& GetPicture(int id);
 	Picture* GetPicturePtr(int id);
 
+	Tone oldTones[999];
+	int oldTonesTimer[999];
+	bool NeedRefreshTone(Tone new_tone, int id);
+	void RefreshTone(Tone tone, int id);
+
 private:
 	void RequestPictureSprite(Picture& pic);
 	void OnPictureSpriteReady(FileRequestResult*, int id);
