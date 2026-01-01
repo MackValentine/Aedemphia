@@ -31,6 +31,7 @@
 #include "player.h"
 #include "drawable_list.h"
 #include "map_data.h"
+#include "game_pictures.h"
 
 Spriteset_Map::Spriteset_Map() {
 	panorama = std::make_unique<Plane>();
@@ -88,7 +89,7 @@ void Spriteset_Map::Update() {
 
 	tilemap->SetOx(Game_Map::GetDisplayX() / (SCREEN_TILE_SIZE / TILE_SIZE));
 	tilemap->SetOy(Game_Map::GetDisplayY() / (SCREEN_TILE_SIZE / TILE_SIZE));
-	tilemap->SetTone(new_tone);
+	//tilemap->SetTone(new_tone);
 
 	for (const auto& character_sprite : character_sprites) {
 		character_sprite->Update();
@@ -97,7 +98,13 @@ void Spriteset_Map::Update() {
 
 	panorama->SetOx(Game_Map::Parallax::GetX());
 	panorama->SetOy(Game_Map::Parallax::GetY());
-	panorama->SetTone(new_tone);
+	//panorama->SetTone(new_tone);
+
+	if (Main_Data::game_pictures->NeedRefreshTone(new_tone, 0)) {
+		Main_Data::game_pictures->RefreshTone(new_tone, 0);
+		tilemap->SetTone(new_tone);
+		panorama->SetTone(new_tone);
+	}
 
 	Game_Vehicle* vehicle;
 	int map_id = Game_Map::GetMapId();

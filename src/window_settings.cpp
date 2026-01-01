@@ -285,6 +285,7 @@ void Window_Settings::RefreshVideo() {
 	AddOption(cfg.touch_ui, [](){ DisplayUi->ToggleTouchUi(); });
 	AddOption(cfg.game_resolution, [this]() { DisplayUi->SetGameResolution(static_cast<ConfigEnum::GameResolution>(GetCurrentOption().current_value)); });
 	AddOption(cfg.screen_scale, [this](){ DisplayUi->SetScreenScale(GetCurrentOption().current_value); });
+	AddOption(cfg.tone_limit, [this]() { DisplayUi->SetToneLimit(GetCurrentOption().current_value); });
 }
 
 void Window_Settings::RefreshAudio() {

@@ -60,6 +60,7 @@ BaseUi::BaseUi(const Game_Config& cfg)
 
 	auto fps_limit = vcfg.fps_limit.Get();
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
+	tone_limit = vcfg.tone_limit.Get();
 }
 
 BitmapRef BaseUi::CaptureScreen() {

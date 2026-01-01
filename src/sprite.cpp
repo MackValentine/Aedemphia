@@ -116,8 +116,9 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flip_y = flipy_effect;
 		Sprite_Picture* d_ptr = dynamic_cast<Sprite_Picture*>(this);
 		if (d_ptr) {
-			bitmap_effects_src_rect = GetSrcRect();
-			bitmap_effects = Cache::SpriteEffect(bitmap, GetSrcRect(), flipx_effect, flipy_effect, current_tone, current_flash);
+			Rect r = GetSrcRect();
+			bitmap_effects_src_rect = r;
+			bitmap_effects = Cache::SpriteEffect(bitmap, r, flipx_effect, flipy_effect, current_tone, current_flash);
 		}
 		else {
 			bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);

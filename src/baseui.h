@@ -217,12 +217,20 @@ public:
 	Game_Clock::duration GetFrameLimit() const;
 
 	/**
+	 * @return the minimum amount of time each physical frame should take.
+	 * If the UI manages time (i.e.) vsync, will return a 0 duration.
+	 */
+	int GetToneLimit() const;
+
+	/**
 	 * Sets the frame limit.
 	 * Note that this uses int instead of Game_Clock to make the invocation easier.
 	 *
 	 * @param fps_limit new fps limit
 	 */
 	void SetFrameLimit(int fps_limit);
+
+	void SetToneLimit(int tone_limit);
 
 	/** Sets the scaling mode of the window */
 	virtual void SetScalingMode(ConfigEnum::ScalingMode) {};
@@ -322,6 +330,9 @@ protected:
 
 	/** The amount of time each frame should take, based on fps limit */
 	Game_Clock::duration frame_limit = Game_Clock::GetTargetGameTimeStep();
+
+	/**  */
+	int tone_limit;
 
 	/** Cursor visibility flag. */
 	bool cursor_visible = false;
@@ -436,6 +447,16 @@ inline void BaseUi::SetFrameLimit(int fps_limit) {
 	vcfg.fps_limit.Set(fps_limit);
 
 	frame_limit = (fps_limit == 0 ? Game_Clock::duration(0) : Game_Clock::TimeStepFromFps(fps_limit));
+}
+
+inline int BaseUi::GetToneLimit() const {
+	return tone_limit;
+}
+
+inline void BaseUi::SetToneLimit(int t_limit) {
+	vcfg.tone_limit.Set(t_limit);
+
+	tone_limit = t_limit;
 }
 
 #endif

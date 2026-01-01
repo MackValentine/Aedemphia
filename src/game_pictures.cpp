@@ -29,6 +29,7 @@
 #include "scene.h"
 #include "drawable_mgr.h"
 #include "sprite_picture.h"
+#include "baseui.h"
 
 static bool IsEmpty(const lcf::rpg::SavePicture& data, int frames) {
 	lcf::rpg::SavePicture empty;
@@ -654,7 +655,6 @@ int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 
 bool Game_Pictures::NeedRefreshTone(Tone new_tone, int id) {
 	Tone oldTone = Main_Data::game_pictures->oldTones[id];
-	return true;
 
 	//if (oldTonesTimer[id] > 0)
 	//	oldTonesTimer[id]--;
@@ -662,7 +662,7 @@ bool Game_Pictures::NeedRefreshTone(Tone new_tone, int id) {
 
 	bool need_update = false;
 
-	int perc_diff = 1;
+	int perc_diff = DisplayUi->GetToneLimit();
 
 	int r_diff = new_tone.red * perc_diff / 100;
 	//r_diff = perc_diff;

@@ -27,7 +27,7 @@
 #define ORGANIZATION_NAME "EasyRPG"
 
 /** Subfolder name for global configuration */
-#define APPLICATION_NAME "Player"
+#define APPLICATION_NAME "Aedemphia"
 
 /** Website shown on the logo scene */
 #define WEBSITE_ADDRESS "easyrpg.org"

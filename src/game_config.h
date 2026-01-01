@@ -136,6 +136,8 @@ struct Game_ConfigVideo {
 		Utils::MakeSvArray("The default resolution (320x240, 4:3)", "Can cause glitches (416x240, 16:9)", "Can cause glitches (560x240, 21:9)")};
 	RangeConfigParam<int> screen_scale{ "Scaling", "Adjust screen scaling (Overscan/Underscan)", "Video", "ScreenScale", 100, 50, 150 };
 
+	RangeConfigParam<int> tone_limit{ "Tone Limiter", "Increase FPS/Decrease Tone effect (Recommended: 3)", "Video", "ToneLimit", 3, 0, 100 };
+
 	// These are never shown and are used to restore the window to the previous position
 	ConfigParam<int> window_x{ "", "", "Video", "WindowX", -1 };
 	ConfigParam<int> window_y{ "", "", "Video", "WindowY", -1 };
