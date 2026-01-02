@@ -2146,8 +2146,11 @@ void Game_Map::Parallax::ResetPositionX() {
 
 	if (!params.scroll_horz && !LoopHorizontal()) {
 		int pan_screen_width = Player::screen_width;
-		if (Player::game_config.fake_resolution.Get()) {
-			pan_screen_width = SCREEN_TARGET_WIDTH;
+		if (Player::game_config.fake_resolution.Get()) {			
+			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
+			if (map_width < pan_screen_width) {
+				pan_screen_width = map_width;
+			}
 		}
 
 		int tiles_per_screen = pan_screen_width / TILE_SIZE;
@@ -2185,7 +2188,10 @@ void Game_Map::Parallax::ResetPositionY() {
 	if (!params.scroll_vert && !Game_Map::LoopVertical()) {
 		int pan_screen_height = Player::screen_height;
 		if (Player::game_config.fake_resolution.Get()) {
-			pan_screen_height = SCREEN_TARGET_HEIGHT;
+			int map_height = Game_Map::GetTilesY() * TILE_SIZE;
+			if (map_height < pan_screen_height) {
+				pan_screen_height = map_height;
+			}
 		}
 
 		int tiles_per_screen = pan_screen_height / TILE_SIZE;

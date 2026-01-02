@@ -93,7 +93,7 @@ void Spriteset_Map::Update() {
 
 	for (const auto& character_sprite : character_sprites) {
 		character_sprite->Update();
-		character_sprite->SetTone(new_tone);
+		//character_sprite->SetTone(new_tone);
 	}
 
 	panorama->SetOx(Game_Map::Parallax::GetX());
@@ -104,6 +104,9 @@ void Spriteset_Map::Update() {
 		Main_Data::game_pictures->RefreshTone(new_tone, 0);
 		tilemap->SetTone(new_tone);
 		panorama->SetTone(new_tone);
+		for (const auto& character_sprite : character_sprites) {
+			character_sprite->SetTone(new_tone);
+		}
 	}
 
 	Game_Vehicle* vehicle;
@@ -335,10 +338,10 @@ void Spriteset_Map::CalculatePanoramaRenderOffset() {
 	// Resolution hack for Panorama
 	if (Player::game_config.fake_resolution.Get()) {
 		if (Game_Map::Parallax::FakeXPosition()) {
-			panorama->SetRenderOx((Player::screen_width - SCREEN_TARGET_WIDTH) / 2);
+			panorama->SetRenderOx((Player::screen_width - (Game_Map::GetTilesX() * TILE_SIZE)) / 2);
 		}
 		if (Game_Map::Parallax::FakeYPosition()) {
-			panorama->SetRenderOy((Player::screen_height - SCREEN_TARGET_HEIGHT) / 2);
+			panorama->SetRenderOy((Player::screen_height - (Game_Map::GetTilesY() * TILE_SIZE)) / 2);
 		}
 	}
 }
