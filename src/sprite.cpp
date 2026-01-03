@@ -23,6 +23,8 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "drawable_mgr.h"
+#include "sprite_picture.h"
+#include <game_map.h>
 
 // Constructor
 Sprite::Sprite(Drawable::Flags flags) : Drawable(0, flags)
@@ -114,8 +116,49 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
-		bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
-		bitmap_effects_src_rect = rect;
+		bool useBigSprite = false;
+
+		Sprite_Picture* d_ptr = dynamic_cast<Sprite_Picture*>(this);
+		if (d_ptr) {
+
+			if (d_ptr->GetTone() != Tone()) {
+				Rect r = GetSrcRect();
+
+				int w = Player::screen_width;
+				int h = Player::screen_height;
+
+				int dx = 0;
+				int dy = 0;
+				if (r.width > w) {
+					r.width = w;
+					dx = d_ptr->GetOx() - d_ptr->GetX();
+					useBigSprite = true;
+				}
+				if (r.height > h) {
+					r.height = h;
+					dy = d_ptr->GetOy() - d_ptr->GetY();
+					useBigSprite = true;
+				}
+
+				r.x += dx;
+				r.y += dy;
+
+				Rect r2 = { 0,0,w,h };
+
+				bitmap_effects_src_rect = r;
+				BitmapRef bmp = Bitmap::Create(w, h, true);
+				bmp->Blit(0, 0, *bitmap, r, 255);
+				BitmapRef bmmp = Bitmap::Create(w, h, true);
+				bmp = Cache::SpriteEffect(bmp, r2, flipx_effect, flipy_effect, current_tone, current_flash);
+				bitmap_effects = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight(), true);
+				bitmap_effects->Blit(r.x, r.y, *bmp, r2, 255);
+			}
+		}
+
+		if (!useBigSprite) {
+			bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
+			bitmap_effects_src_rect = rect;
+		}
 
 		return bitmap_effects;
 	}
