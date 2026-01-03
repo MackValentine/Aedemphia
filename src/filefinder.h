@@ -170,6 +170,8 @@ namespace FileFinder {
 	 */
 	std::string FindSound(std::string_view name);
 
+	std::string FindMovie(std::string_view name);
+
 	/**
 	 * Finds a font file.
 	 * Searches through the current RPG Maker game and the RTP directories.
